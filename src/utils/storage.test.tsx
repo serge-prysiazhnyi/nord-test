@@ -1,4 +1,6 @@
 import { setToken, getToken, removeToken } from './storage'
+import { mockToken } from '../mocks/mockTestsData'
+import { LOCAL_STORAGE_TOKEN_KEY } from '../constants'
 
 describe('Token Storage', () => {
   beforeEach(() => {
@@ -12,21 +14,23 @@ describe('Token Storage', () => {
   })
 
   test('should store the token in localStorage', () => {
-    setToken('my-test-token')
+    setToken(mockToken)
     expect(localStorage.setItem).toHaveBeenCalledWith(
-      'auth_token',
-      'my-test-token',
+      LOCAL_STORAGE_TOKEN_KEY,
+      mockToken,
     )
   })
 
   test('should retrieve the token from localStorage', () => {
-    vi.spyOn(localStorage, 'getItem').mockReturnValue('my-test-token')
-    expect(getToken()).toBe('my-test-token')
-    expect(localStorage.getItem).toHaveBeenCalledWith('auth_token')
+    vi.spyOn(localStorage, 'getItem').mockReturnValue(mockToken)
+    expect(getToken()).toBe(mockToken)
+    expect(localStorage.getItem).toHaveBeenCalledWith(LOCAL_STORAGE_TOKEN_KEY)
   })
 
   test('should remove the token from localStorage', () => {
     removeToken()
-    expect(localStorage.removeItem).toHaveBeenCalledWith('auth_token')
+    expect(localStorage.removeItem).toHaveBeenCalledWith(
+      LOCAL_STORAGE_TOKEN_KEY,
+    )
   })
 })

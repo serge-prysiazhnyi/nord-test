@@ -1,13 +1,13 @@
-const TOKEN_KEY = 'auth_token'
+import { LOCAL_STORAGE_TOKEN_KEY } from '../constants'
 
 export const setToken = (token: string) => {
-  localStorage.setItem(TOKEN_KEY, token)
+  localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, token)
 }
 
 export const getToken = () => {
-  return localStorage.getItem(TOKEN_KEY)
+  return localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY)
 }
 
 export const removeToken = () => {
-  localStorage.removeItem(TOKEN_KEY)
+  localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY)
 }
