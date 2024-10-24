@@ -21,21 +21,21 @@ describe('App', () => {
     vi.spyOn(storage, 'getToken').mockReturnValue(null)
     renderComponent()
 
-    expect(screen.getByText(/login/i)).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /login/i })).toBeInTheDocument()
   })
 
   test('should render index page when auth token exists', () => {
     vi.spyOn(storage, 'getToken').mockReturnValue('fake-token')
     renderComponent()
 
-    expect(screen.getByText(/hello/i)).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /hello/i })).toBeInTheDocument()
   })
 
   test('should redirect from /login to index page when auth token exists', () => {
     vi.spyOn(storage, 'getToken').mockReturnValue('fake-token')
     renderComponent('/login')
 
-    expect(screen.getByText(/hello/i)).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /hello/i })).toBeInTheDocument()
   })
 
   test('should render 404 page if the route does not exist', () => {
