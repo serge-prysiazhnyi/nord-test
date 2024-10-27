@@ -8,23 +8,14 @@ export const mockJsonResponse = <T extends object>(
   method: Method,
   endpoint: string,
   data: T,
+  delayMs?: number,
 ) => {
   server.use(
     http[method](endpoint, async () => {
+      if (delayMs) {
+        await delay(delayMs)
+      }
       return HttpResponse.json(data)
-    }),
-  )
-}
-
-export const simulateDelay = (
-  method: Method,
-  endpoint: string,
-  delayMs: number,
-) => {
-  server.use(
-    http[method](endpoint, async () => {
-      await delay(delayMs)
-      return HttpResponse.json({})
     }),
   )
 }
