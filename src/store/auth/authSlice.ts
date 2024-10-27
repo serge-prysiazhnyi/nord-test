@@ -1,6 +1,10 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store'
-import { getToken, setToken, removeToken } from '../../utils/storage'
+import {
+  getTokenFromLocalStorage,
+  setTokenInLocalStorage,
+  removeTokenFromLocalStorage,
+} from '../../utils/localStorage'
 import { fetchData } from '../../services/api'
 import { TOKEN_URL } from '../../constants'
 import { APITokenResponse } from '../../types'
@@ -13,8 +17,8 @@ export interface AuthState {
 }
 
 const initialState: AuthState = {
-  token: getToken(),
-  isAuthenticated: Boolean(getToken()),
+  token: getTokenFromLocalStorage(),
+  isAuthenticated: Boolean(getTokenFromLocalStorage()),
   isLoading: false,
   error: null,
 }
@@ -32,7 +36,7 @@ export const loginUser = createAsyncThunk(
         headers: { 'Content-Type': 'application/json' },
       })
 
-      setToken(response.token)
+      setTokenInLocalStorage(response.token)
       return response.token
     } catch (error) {
       return rejectWithValue(
@@ -47,7 +51,7 @@ export const logoutUser = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       // ToDo: Call logout endpoint if needed
-      removeToken()
+      removeTokenFromLocalStorage()
       return null
     } catch (error) {
       return rejectWithValue(
