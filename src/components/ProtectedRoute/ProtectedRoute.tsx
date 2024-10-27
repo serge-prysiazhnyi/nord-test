@@ -1,11 +1,13 @@
 import React from 'react'
 import { Navigate } from 'react-router-dom'
-import { getToken } from '../../utils/storage'
+
+import { useAppSelector } from '../../store/hooks'
+import { selectIsAuthenticated } from '../../store/auth/authSlice'
 
 const ProtectedRoute: React.FC<{ children: JSX.Element }> = ({ children }) => {
-  const token = getToken()
+  const isAuthenticated = useAppSelector(selectIsAuthenticated)
 
-  return token ? children : <Navigate to="/login" />
+  return isAuthenticated ? children : <Navigate to="/login" />
 }
 
 export default ProtectedRoute

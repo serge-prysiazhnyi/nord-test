@@ -1,13 +1,15 @@
-import { render } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
+
 import ProtectedRoute from './ProtectedRoute'
-import * as storage from '../../utils/storage'
+import renderWithStoreProvider from '../../utils/tests/renderWithStoreProvider'
+import { AuthState } from '../../store/auth/authSlice'
 
 describe('ProtectedRoute', () => {
-  const ProtectedContent = () => <div>Protected Content</div> // Mock protected content
+  const ProtectedContent = () => <div>Protected Content</div>
 
-  const renderComponent = () =>
-    render(
+  const renderComponent = (preloadedState?: { auth: Partial<AuthState> }) => {
+    const { store } = renderWithStoreProvider(
       <MemoryRouter initialEntries={['/protected']}>
         <Routes>
           <Route
@@ -21,25 +23,27 @@ describe('ProtectedRoute', () => {
           <Route path="/login" element={<div>Login Page</div>} />
         </Routes>
       </MemoryRouter>,
+      { preloadedState },
     )
+
+    return {
+      store,
+    }
+  }
 
   afterEach(() => {
     vi.clearAllMocks()
   })
 
   test('renders children when authenticated', () => {
-    vi.spyOn(storage, 'getToken').mockReturnValue('valid-token')
+    renderComponent({ auth: { token: 'valid-token', isAuthenticated: true } })
 
-    const { getByText } = renderComponent()
-
-    expect(getByText('Protected Content')).toBeInTheDocument()
+    expect(screen.getByText('Protected Content')).toBeInTheDocument()
   })
 
   test('redirects to login when not authenticated', () => {
-    vi.spyOn(storage, 'getToken').mockReturnValue(null)
+    renderComponent({ auth: { token: null, isAuthenticated: false } })
 
-    const { getByText } = renderComponent()
-
-    expect(getByText('Login Page')).toBeInTheDocument()
+    expect(screen.getByText('Login Page')).toBeInTheDocument()
   })
 })
