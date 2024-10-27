@@ -1,7 +1,14 @@
 import { memo } from 'react'
 
+import LoginFormContainer from '../../components/LoginFormContainer/LoginFormContainer'
+
 const Login: React.FC = memo(() => {
-  return <h1>Please login</h1>
+  return (
+    <div>
+      <h1>Please login</h1>
+      <LoginFormContainer />
+    </div>
+  )
 })
 
 Login.displayName = 'Login'
