@@ -6,3 +6,8 @@ export interface ServerData {
 export interface APITokenResponse {
   token: string
 }
+
+export interface UserCredentials {
+  username: string
+  password: string
+}
