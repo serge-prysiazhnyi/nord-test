@@ -1,9 +1,20 @@
+import { store } from '../store/store'
+
 export const fetchData = async <T>(
   url: string,
-  options?: RequestInit,
+  options: RequestInit = {},
 ): Promise<T> => {
   try {
-    const response = await fetch(url, options)
+    const token = store.getState()?.auth?.token
+
+    const finalOptions: RequestInit = token
+      ? {
+          ...options,
+          headers: { ...options?.headers, Authorization: `Bearer ${token}` },
+        }
+      : options
+
+    const response = await fetch(url, finalOptions)
 
     const data = await response.json()
 
