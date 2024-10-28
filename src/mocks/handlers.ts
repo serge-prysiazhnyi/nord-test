@@ -1,7 +1,8 @@
 import { http, HttpResponse } from 'msw'
 
-import { TOKEN_URL } from '../constants'
+import { TOKEN_URL, SERVERS_URL } from '../constants'
 import { mockToken, mockUserPassword, mockUsername } from './mockTestsData'
+import mockServers from '../mocks/mockServers.json'
 
 interface LoginRequestBody {
   token: string
@@ -25,4 +26,7 @@ export const handlers = [
       }
     },
   ),
+  http.get(SERVERS_URL, async () => {
+    return HttpResponse.json(mockServers)
+  }),
 ]
