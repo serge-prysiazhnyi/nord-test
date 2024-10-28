@@ -1,39 +1,43 @@
+import React, { PropsWithChildren } from 'react'
 import { render } from '@testing-library/react'
-import { configureStore } from '@reduxjs/toolkit'
+import type { RenderOptions } from '@testing-library/react'
 import { Provider } from 'react-redux'
+import { configureStore, combineReducers } from '@reduxjs/toolkit'
+
+import { AppStore, RootState } from '../../store/store'
 
 import authReducer, { AuthState } from '../../store/auth/authSlice'
+import serversReducer from '../../store/servers/serversSlice'
 
-const createTestStore = (preloadedState?: { auth: Partial<AuthState> }) => {
-  return configureStore({
-    reducer: {
-      auth: authReducer,
-    },
-    preloadedState: {
-      auth: {
-        token: null,
-        isAuthenticated: false,
-        isLoading: false,
-        error: null,
-        ...preloadedState?.auth,
-      },
-    },
-  })
+export type PreloadedState = Partial<RootState>
+
+export const mockAuthInitialState: AuthState = {
+  token: null,
+  isAuthenticated: false,
+  error: null,
+  isLoading: false,
 }
 
-interface RenderWithStoreProviderOptions {
-  preloadedState?: { auth: Partial<AuthState> }
+interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
+  preloadedState?: PreloadedState
+  store?: AppStore
 }
 
-const renderWithStoreProvider = (
+function renderWithStoreProvider(
   ui: React.ReactElement,
-  { preloadedState }: RenderWithStoreProviderOptions = {},
-) => {
-  const store = createTestStore(preloadedState)
-  return {
-    store,
-    ...render(<Provider store={store}>{ui}</Provider>),
+  {
+    preloadedState = {},
+    store = configureStore({
+      reducer: combineReducers({ auth: authReducer, servers: serversReducer }),
+      preloadedState,
+    }),
+    ...renderOptions
+  }: ExtendedRenderOptions = {},
+) {
+  function Wrapper({ children }: PropsWithChildren<object>): JSX.Element {
+    return <Provider store={store}>{children}</Provider>
   }
+  return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) }
 }
 
 export default renderWithStoreProvider

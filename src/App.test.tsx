@@ -1,9 +1,12 @@
 import { screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
+import userEvent from '@testing-library/user-event'
 
 import App from './App'
-import { AuthState } from '../src/store/auth/authSlice'
-import renderWithStoreProvider from './utils/tests/renderWithStoreProvider'
+import renderWithStoreProvider, {
+  PreloadedState,
+  mockAuthInitialState,
+} from './utils/tests/renderWithStoreProvider'
 import { mockToken } from '../src/mocks/mockTestsData'
 
 describe('App', () => {
@@ -13,7 +16,7 @@ describe('App', () => {
 
   const renderComponent = (
     initialRoute: string = '/',
-    preloadedState?: { auth: Partial<AuthState> },
+    preloadedState?: PreloadedState,
   ) => {
     const { store } = renderWithStoreProvider(
       <MemoryRouter initialEntries={[initialRoute]}>
@@ -28,13 +31,21 @@ describe('App', () => {
   }
 
   test('should redirect to login page when there is no auth token', () => {
-    renderComponent('/', { auth: { token: null, isAuthenticated: false } })
+    renderComponent('/', {
+      auth: mockAuthInitialState,
+    })
 
     expect(screen.getByRole('heading', { name: /login/i })).toBeInTheDocument()
   })
 
   test('should render index page when auth token exists', () => {
-    renderComponent('/', { auth: { token: mockToken, isAuthenticated: true } })
+    renderComponent('/', {
+      auth: {
+        ...mockAuthInitialState,
+        token: mockToken,
+        isAuthenticated: true,
+      },
+    })
 
     expect(screen.getByRole('heading', { name: /hello/i })).toBeInTheDocument()
   })
@@ -42,12 +53,30 @@ describe('App', () => {
   test('should redirect from /login to index page when auth token exists', () => {
     renderComponent('/login', {
       auth: {
+        ...mockAuthInitialState,
         token: mockToken,
         isAuthenticated: true,
       },
     })
 
     expect(screen.getByRole('heading', { name: /hello/i })).toBeInTheDocument()
+  })
+
+  test('should redirect to /login after logout', async () => {
+    renderComponent('/login', {
+      auth: {
+        ...mockAuthInitialState,
+        token: mockToken,
+        isAuthenticated: true,
+      },
+    })
+
+    const user = userEvent.setup()
+    const logout = screen.getByRole('button', { name: /logout/i })
+
+    await user.click(logout)
+
+    expect(screen.getByRole('heading', { name: /login/i })).toBeInTheDocument()
   })
 
   test('should render 404 page if the route does not exist', () => {

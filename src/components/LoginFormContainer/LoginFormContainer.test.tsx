@@ -3,7 +3,10 @@ import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 
 import LoginFormContainer from './LoginFormContainer'
-import renderWithStoreProvider from '../../utils/tests/renderWithStoreProvider'
+import renderWithStoreProvider, {
+  PreloadedState,
+  mockAuthInitialState,
+} from '../../utils/tests/renderWithStoreProvider'
 import { server } from '../../mocks/server'
 import { mockJsonResponse, simulateError } from '../../mocks/utils'
 import {
@@ -12,10 +15,9 @@ import {
   mockToken,
 } from '../../mocks/mockTestsData'
 import { TOKEN_URL } from '../../constants'
-import { AuthState } from '../../store/auth/authSlice'
 
 interface RenderWithProviderOptions {
-  preloadedState?: { auth: Partial<AuthState> }
+  preloadedState?: PreloadedState
 }
 
 const renderComponent = ({
@@ -121,8 +123,9 @@ describe('LoginFormContainer', () => {
   })
 
   test('preserves existing auth state when mounted', () => {
-    const preloadedState = {
+    const preloadedState: PreloadedState = {
       auth: {
+        ...mockAuthInitialState,
         isAuthenticated: true,
         token: mockToken,
       },

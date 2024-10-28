@@ -16,7 +16,7 @@ export interface AuthState {
   error: string | null
 }
 
-const initialState: AuthState = {
+export const authInitialState: AuthState = {
   token: getTokenFromLocalStorage(),
   isAuthenticated: Boolean(getTokenFromLocalStorage()),
   isLoading: false,
@@ -63,7 +63,7 @@ export const logoutUser = createAsyncThunk(
 
 const authSlice = createSlice({
   name: 'auth',
-  initialState,
+  initialState: authInitialState,
   reducers: {
     setError: (state, action: PayloadAction<string>) => {
       state.error = action.payload

@@ -2,13 +2,15 @@ import { screen } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 
 import ProtectedRoute from './ProtectedRoute'
-import renderWithStoreProvider from '../../utils/tests/renderWithStoreProvider'
-import { AuthState } from '../../store/auth/authSlice'
+import renderWithStoreProvider, {
+  PreloadedState,
+  mockAuthInitialState,
+} from '../../utils/tests/renderWithStoreProvider'
 
 describe('ProtectedRoute', () => {
   const ProtectedContent = () => <div>Protected Content</div>
 
-  const renderComponent = (preloadedState?: { auth: Partial<AuthState> }) => {
+  const renderComponent = (preloadedState?: PreloadedState) => {
     const { store } = renderWithStoreProvider(
       <MemoryRouter initialEntries={['/protected']}>
         <Routes>
@@ -36,13 +38,21 @@ describe('ProtectedRoute', () => {
   })
 
   test('renders children when authenticated', () => {
-    renderComponent({ auth: { token: 'valid-token', isAuthenticated: true } })
+    renderComponent({
+      auth: {
+        ...mockAuthInitialState,
+        token: 'valid-token',
+        isAuthenticated: true,
+      },
+    })
 
     expect(screen.getByText('Protected Content')).toBeInTheDocument()
   })
 
   test('redirects to login when not authenticated', () => {
-    renderComponent({ auth: { token: null, isAuthenticated: false } })
+    renderComponent({
+      auth: { ...mockAuthInitialState, token: null, isAuthenticated: false },
+    })
 
     expect(screen.getByText('Login Page')).toBeInTheDocument()
   })
