@@ -1,3 +1,22 @@
+# Start the project
+
+- npm run dev
+- npm run preview
+
+# Build the project
+
+- npm run build
+
+## desired improvements
+
+- check user credential validation rules on server side and align login form validation with these rules
+- toggle password input mode
+- check pagination for servers list and implement it in ServersListContainer component
+- or add load more button (virtualization is needed for long list)
+- register route and sign up form
+
+### Vite template documentation:
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
