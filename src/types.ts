@@ -11,3 +11,8 @@ export interface UserCredentials {
   username: string
   password: string
 }
+
+export enum DIRECTIONS {
+  asc = 'ASC',
+  desc = 'DESC',
+}
