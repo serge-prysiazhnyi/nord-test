@@ -47,7 +47,9 @@ describe('App', () => {
       },
     })
 
-    expect(screen.getByRole('heading', { name: /hello/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { name: /servers/i }),
+    ).toBeInTheDocument()
   })
 
   test('should redirect from /login to index page when auth token exists', () => {
@@ -59,7 +61,9 @@ describe('App', () => {
       },
     })
 
-    expect(screen.getByRole('heading', { name: /hello/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { name: /servers/i }),
+    ).toBeInTheDocument()
   })
 
   test('should redirect to /login after logout', async () => {
@@ -83,5 +87,28 @@ describe('App', () => {
     renderComponent('/non-existent-page')
 
     expect(screen.getByText(/not found/i)).toBeInTheDocument()
+  })
+
+  test('should render 404 page and go back to previous page on "Go Back" button click', async () => {
+    renderComponent('/', {
+      auth: {
+        ...mockAuthInitialState,
+        token: mockToken,
+        isAuthenticated: true,
+      },
+    })
+
+    const user = userEvent.setup()
+
+    renderComponent('/non-existent-page')
+    expect(screen.getByText(/404: Page Not Found/i)).toBeInTheDocument()
+
+    const goBackButton = screen.getByRole('button', { name: /go back/i })
+    expect(goBackButton).toBeInTheDocument()
+
+    await user.click(goBackButton)
+    expect(
+      screen.getByRole('heading', { name: /servers/i }),
+    ).toBeInTheDocument()
   })
 })
