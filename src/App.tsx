@@ -4,7 +4,7 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import { useAppSelector } from '../src/store/hooks'
 import { selectIsAuthenticated } from '../src/store/auth/authSlice'
 import ProtectedRoute from '../src/components/ProtectedRoute/ProtectedRoute'
-import Index from './pages/Index'
+import Home from './pages/Home'
 import Login from './pages/Login'
 import Notfound from './pages/Notfound'
 
@@ -22,7 +22,7 @@ const App: React.FC = () => {
         path="/"
         element={
           <ProtectedRoute>
-            <Index />
+            <Home />
           </ProtectedRoute>
         }
       />
