@@ -4,10 +4,10 @@ import type { RenderOptions } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
 
-import { AppStore, RootState } from '../../store/store'
+import { AppStore, RootState } from '../store/store'
 
-import authReducer, { AuthState } from '../../store/auth/authSlice'
-import serversReducer from '../../store/servers/serversSlice'
+import authReducer, { AuthState } from '../store/auth/authSlice'
+import serversReducer from '../store/servers/serversSlice'
 
 export type PreloadedState = Partial<RootState>
 

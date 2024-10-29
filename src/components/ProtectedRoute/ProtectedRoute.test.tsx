@@ -5,7 +5,7 @@ import ProtectedRoute from './ProtectedRoute'
 import renderWithStoreProvider, {
   PreloadedState,
   mockAuthInitialState,
-} from '../../utils/tests/renderWithStoreProvider'
+} from '../../mocks/renderWithStoreProvider'
 
 describe('ProtectedRoute', () => {
   const ProtectedContent = () => <div>Protected Content</div>

@@ -6,7 +6,7 @@ import App from './App'
 import renderWithStoreProvider, {
   PreloadedState,
   mockAuthInitialState,
-} from './utils/tests/renderWithStoreProvider'
+} from './mocks/renderWithStoreProvider'
 import { mockToken } from '../src/mocks/mockTestsData'
 
 describe('App', () => {

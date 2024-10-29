@@ -6,7 +6,7 @@ import LoginFormContainer from './LoginFormContainer'
 import renderWithStoreProvider, {
   PreloadedState,
   mockAuthInitialState,
-} from '../../utils/tests/renderWithStoreProvider'
+} from '../../mocks/renderWithStoreProvider'
 import { server } from '../../mocks/server'
 import { mockJsonResponse, simulateError } from '../../mocks/utils'
 import {

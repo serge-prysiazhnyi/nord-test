@@ -5,7 +5,7 @@ import Logout from './Logout'
 import renderWithStoreProvider, {
   PreloadedState,
   mockAuthInitialState,
-} from '../../utils/tests/renderWithStoreProvider'
+} from '../../mocks/renderWithStoreProvider'
 import { logoutUser } from '../../store/auth/authSlice'
 import { mockToken } from '../../mocks/mockTestsData'
 

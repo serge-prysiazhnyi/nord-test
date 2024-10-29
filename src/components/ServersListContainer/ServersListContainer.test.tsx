@@ -4,7 +4,7 @@ import UserEvent from '@testing-library/user-event'
 import { server } from '../../mocks/server'
 import renderWithStoreProvider, {
   PreloadedState,
-} from '../../utils/tests/renderWithStoreProvider'
+} from '../../mocks/renderWithStoreProvider'
 import { SERVERS_URL } from '../../constants'
 import { simulateError, mockJsonResponse } from '../../mocks/utils'
 
