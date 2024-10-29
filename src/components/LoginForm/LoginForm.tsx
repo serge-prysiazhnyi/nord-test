@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 
-import LoadingIndicator from '../LoadingIndicator/LoadingIndicator'
+import ErrorMessage from '../ErrorMessage/ErrorMessage'
+import Button from '../Button/Button'
+import Input from '../Input/Input'
 import { UserCredentials } from '../../types'
 
 export interface LoginFormProps {
@@ -30,27 +32,29 @@ const LoginForm: React.FC<LoginFormProps> = ({
   }
 
   return (
-    <form onSubmit={onSubmit}>
-      <input
+    <form onSubmit={onSubmit} className="flex flex-col max-w-80 w-full">
+      <Input
         value={username}
         id="username"
         type="text"
         placeholder="enter username"
         onChange={(e) => setUserName(e.target.value.trim())}
         disabled={isLoading}
+        required
       />
-      <input
+      <Input
         value={password}
         id="password"
         type="password"
         placeholder="enter password"
         onChange={(e) => setPassword(e.target.value.trim())}
         disabled={isLoading}
+        required
       />
-      <button type="submit" disabled={!canSubmit}>
-        {isLoading ? <LoadingIndicator /> : 'Login'}
-      </button>
-      {error && <div role="alert">{error}</div>}
+      <Button type="submit" disabled={!canSubmit}>
+        {isLoading ? <div role="progressbar">Loading...</div> : 'Login'}
+      </Button>
+      {error && <ErrorMessage message={error} />}
     </form>
   )
 }

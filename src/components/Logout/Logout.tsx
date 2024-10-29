@@ -1,5 +1,6 @@
 import React from 'react'
 
+import Button from '../Button/Button'
 import { useAppDispatch } from '../../store/hooks'
 import { logoutUser } from '../../store/auth/authSlice'
 
@@ -12,9 +13,9 @@ const Logout: React.FC = () => {
 
   return (
     <div>
-      <button onClick={handleLogout} type="button">
+      <Button onClick={handleLogout} type="button">
         Logout
-      </button>
+      </Button>
     </div>
   )
 }

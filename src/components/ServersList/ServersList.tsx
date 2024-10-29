@@ -14,6 +14,8 @@ interface SortConfig {
   direction: DIRECTIONS
 }
 
+const isOddRow = (num: number) => num % 2 !== 0
+
 const ServersList: React.FC<ServersListProps> = ({ servers }) => {
   const [sortConfig, setSortConfig] = useState<SortConfig>({
     key: 'name',
@@ -55,7 +57,7 @@ const ServersList: React.FC<ServersListProps> = ({ servers }) => {
 
   const SortIcon = ({ columnKey }: { columnKey: SortKey }) => {
     if (sortConfig.key !== columnKey) {
-      return <div />
+      return <div className="w-3 h-3" />
     }
     return sortConfig.direction === DIRECTIONS.asc ? (
       <Arrow />
@@ -67,7 +69,7 @@ const ServersList: React.FC<ServersListProps> = ({ servers }) => {
   return (
     <>
       {servers.length > 0 && (
-        <table>
+        <table className="w-full">
           <thead>
             <tr>
               {(['name', 'distance'] as const).map((column) => (
@@ -77,7 +79,7 @@ const ServersList: React.FC<ServersListProps> = ({ servers }) => {
                   role="button"
                   aria-label={column}
                 >
-                  <div>
+                  <div className="flex justify-between items-center cursor-pointer p-1 pr-3">
                     {column.charAt(0).toUpperCase() + column.slice(1)}
                     <SortIcon columnKey={column} />
                   </div>
@@ -87,10 +89,13 @@ const ServersList: React.FC<ServersListProps> = ({ servers }) => {
           </thead>
 
           <tbody>
-            {sortedServers.map((server) => (
-              <tr key={server.name}>
-                <td>{server.name}</td>
-                <td>{server.distance}</td>
+            {sortedServers.map((server, i) => (
+              <tr
+                key={`${server.name}-${server.distance}`}
+                className={isOddRow(i) ? 'bg-slate-200' : ''}
+              >
+                <td className="p-1 pr-5">{server.name}</td>
+                <td className="p-1">{server.distance}</td>
               </tr>
             ))}
           </tbody>

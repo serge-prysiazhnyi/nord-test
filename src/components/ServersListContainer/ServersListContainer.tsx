@@ -10,6 +10,8 @@ import {
 } from '../../store/servers/serversSlice'
 import ServersList from '../ServersList/ServersList'
 import LoadingIndicator from '../LoadingIndicator/LoadingIndicator'
+import Button from '../Button/Button'
+import ErrorMessage from '../ErrorMessage/ErrorMessage'
 
 const ServersListContainer: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -31,11 +33,24 @@ const ServersListContainer: React.FC = () => {
 
   return (
     <>
-      <button role="button" onClick={handleRefreshServers} disabled={isLoading}>
-        Refresh
-      </button>
-      {isLoading ? <LoadingIndicator /> : <ServersList servers={servers} />}
-      {error && <div role="alert">{error}</div>}
+      {isLoading ? (
+        <div className="flex justify-center items-center my-2">
+          <LoadingIndicator />
+        </div>
+      ) : (
+        <ServersList servers={servers} />
+      )}
+      {error && <ErrorMessage message={error} />}
+      <div className="flex justify-center items-center">
+        <Button
+          role="button"
+          onClick={handleRefreshServers}
+          disabled={isLoading}
+          className="mt-3 mb-3"
+        >
+          Refresh
+        </Button>
+      </div>
     </>
   )
 }

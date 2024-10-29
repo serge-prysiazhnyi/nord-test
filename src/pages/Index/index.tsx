@@ -6,7 +6,7 @@ import ServersListContainer from '../../components/ServersListContainer/ServersL
 const Index: React.FC = memo(() => {
   return (
     <Layout>
-      <h1>Hello</h1>
+      <h1 className="text-3xl font-bold text-center">Servers</h1>
       <ServersListContainer />
     </Layout>
   )
