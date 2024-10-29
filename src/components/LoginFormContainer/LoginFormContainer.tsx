@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useCallback } from 'react'
 
 import {
   selectError,
@@ -15,9 +15,12 @@ const LoginFormContainer: React.FC = () => {
   const error = useAppSelector(selectError)
   const isLoading = useAppSelector(selectIsLoading)
 
-  const handleSubmit = (credentials: UserCredentials) => {
-    dispatch(loginUser(credentials))
-  }
+  const handleSubmit = useCallback(
+    (credentials: UserCredentials) => {
+      dispatch(loginUser(credentials))
+    },
+    [dispatch],
+  )
 
   useEffect(
     () => () => {
